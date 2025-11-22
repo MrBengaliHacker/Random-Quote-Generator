@@ -1,0 +1,128 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #121420, #1c1e2e);
+    color: #f0f0f5;
+}
+
+/* Glass Container */
+.container {
+    width: 90%;
+    max-width: 650px;
+    padding: 45px 35px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px);
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Title */
+.title {
+    margin-bottom: 35px;
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 700;
+    color: #63b3ed;
+}
+
+/* Quotes */
+.quote-box {
+    margin-bottom: 40px;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#quote {
+    font-size: clamp(18px, 3vw, 26px);
+    margin-bottom: 15px;
+    font-style: italic;
+    line-height: 1.6;
+    animation: fadeText 0.4s ease;
+    text-align: center;
+}
+
+#author {
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: 500;
+    color: #8de5b1;
+    opacity: 0.9;
+    margin-top: 15px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Button base */
+.buttons button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    min-width: 180px;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.generate-btn {
+    background: #63b3ed;
+}
+
+.copy-btn {
+    background: #4a5568;
+}
+
+/* Hover */
+.buttons button:hover {
+    transform: translateY(-3px);
+}
+
+/* Disabled state */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loader Spinner */
+.loader {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #4a5568;
+    border-top: 4px solid #63b3ed;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Text fade animation */
+@keyframes fadeText {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

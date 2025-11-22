@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Quote Generator</title>
+
+    <!-- CSS LINK -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Main container -->
+    <div class="container">
+      <!-- Title -->
+      <h1 class="title">Random Quote Generator</h1>
+
+      <!-- Quote Display Box -->
+      <div class="quote-box">
+        <p id="quote">Click Generate</p>
+        <span id="author"></span>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <button id="btn" class="generate-btn">Generate Quote</button>
+        <button id="copyBtn" class="copy-btn">Copy Quote</button>
+      </div>
+    </div>
+
+    <!-- Click Sound -->
+    <audio id="clickSound" src="click.mp3"></audio>
+
+    <!-- JS File -->
+    <script src="script.js"></script>
+  </body>
+</html>
