@@ -1,21 +1,36 @@
-// Select DOM elements
 const quoteEl = document.getElementById("quote");
 const authorEl = document.getElementById("author");
 const btn = document.getElementById("btn");
 const copyBtn = document.getElementById("copyBtn");
 const clickSound = document.getElementById("clickSound");
 
-// Cached quotes for instant switching
 let quotePool = [];
 let index = 0;
 
-// Play click sound when user interacts
+// Preload Audio
+clickSound.preload = "auto";
+clickSound.volume = 0.9; // Slight boost for mobile clarity
+
+// Unlock audio on mobile with first interaction
+function unlockAudio() {
+  clickSound.play().then(() => {
+    clickSound.pause();
+    clickSound.currentTime = 0;
+    document.removeEventListener('touchstart', unlockAudio);
+    document.removeEventListener('click', unlockAudio);
+  }).catch(() => {});
+}
+
+document.addEventListener('touchstart', unlockAudio);
+document.addEventListener('click', unlockAudio);
+
+// Play click sound
 function playClickSound() {
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
 }
 
-// Show loading spinner and disable button
+// Button loading state
 function setLoading() {
   btn.disabled = true;
   btn.textContent = "Loading...";
@@ -23,81 +38,68 @@ function setLoading() {
   authorEl.textContent = "";
 }
 
-// Re-enable button after update completed
 function enableButton() {
   btn.disabled = false;
   btn.textContent = "Generate Quote";
 }
 
-// Fetch a batch of quotes once and reuse them for instant responses
+// Preload 150 quotes once for FAST switching
 async function preloadQuotes() {
   try {
     const res = await fetch("https://dummyjson.com/quotes?limit=150");
     const data = await res.json();
     quotePool = data.quotes;
-
-    // First time load → instantly show quote
-    if (index === 0) showNextQuote();
-
+    if (index === 0) showNextQuote(); // Show instantly first time
   } catch (error) {
     console.error("Preload failed:", error);
     updateUI("API ERROR!", "No data");
   }
 }
 
-// Show next cached quote smoothly
+// Show quotes one-by-one fast
 function showNextQuote() {
   if (!quotePool.length) {
-    updateUI("Loading...", "");
     preloadQuotes();
     return;
   }
 
-  // Restart cycle when reaching end
-  if (index >= quotePool.length) {
-    index = 0;
-    preloadQuotes(); // Refresh data silently in background
-  }
+  if (index >= quotePool.length) index = 0; // repeat cycle
 
   const q = quotePool[index];
   updateUI(q.quote, q.author);
   index++;
 }
 
-// Update UI with fade animation
+// Update UI text with fade animation
 function updateUI(text, author) {
   quoteEl.textContent = text;
   authorEl.textContent = author ? `— ${author}` : "";
-  
   quoteEl.style.animation = "fadeText 0.4s";
   authorEl.style.animation = "fadeText 0.4s";
-
   setTimeout(() => {
     quoteEl.style.animation = "";
     authorEl.style.animation = "";
   }, 400);
 }
 
-// Generate button click handler
+// Button click
 btn.addEventListener("click", () => {
   playClickSound();
   setLoading();
-
-  // Small delay to ensure loader visible
   setTimeout(() => {
     showNextQuote();
     enableButton();
   }, 250);
 });
 
-// Copy quote text to clipboard
+// Copy button click
 copyBtn.addEventListener("click", () => {
   playClickSound();
-  const copyText = `${quoteEl.textContent} ${authorEl.textContent}`;
-  navigator.clipboard.writeText(copyText);
+  const text = `${quoteEl.textContent} ${authorEl.textContent}`;
+  navigator.clipboard.writeText(text);
   copyBtn.textContent = "Copied!";
   setTimeout(() => (copyBtn.textContent = "Copy Quote"), 1200);
 });
 
-// Load quotes initially on startup
+// Load quotes first time
 preloadQuotes();
